@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Visão RH</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body class="login-body">
+
+    <div class="login-container">
+        <div class="login-header">
+            <span class="login-icon">
+                <span class="material-icons-outlined" style="font-size: 30px;">lock</span>
+            </span>  
+            <h2>RH MAIS</h2>
+            <p>Acesso ao Sistema de Gestão</p>
+        </div>
+
+        <form id="login-form" class="login-form">
+            <div class="input-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" id="login-button">Entrar</button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+
+        <div class="test-credentials">
+            <p><strong>Ambiente de Teste:</strong></p>
+            <p>Digite qualquer CPF e senha para testar a conexão com o servidor local.</p>
+        </div>
+    </div>
+
+    <script type="module" src="./js/modules/login.js"></script>
+</body>
+</html>
