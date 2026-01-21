@@ -25,7 +25,7 @@ loginForm.addEventListener('submit', async (event) => {
                 sessionStorage.setItem('usuarioRole', response.usuario.role);
             }
             
-            window.location.href = 'index.html';
+            window.location.href = '/index.html';
         } else {
             // CORREÇÃO: api.js retorna 'erro' (pt) ou o backend retorna 'error' (en)
             // Aqui pegamos qualquer um dos dois para não falhar
@@ -34,7 +34,7 @@ loginForm.addEventListener('submit', async (event) => {
         }
     } catch (error) {
         console.error(error);
-        msgErro.textContent = 'Erro de conexão. Verifique se o Backend está rodando.';
+        msgErro.textContent = 'Erro de conexão com o servidor. Aguarde alguns segundos e tente novamente.';
     } finally {
         btn.textContent = 'Entrar';
         btn.disabled = false;

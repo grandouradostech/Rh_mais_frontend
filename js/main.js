@@ -4,7 +4,7 @@ import { ModalComponent } from './components/modal.component.js';
 
 
 if (!sessionStorage.getItem('accessToken')) {
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
 }
 
 const state = {
@@ -68,10 +68,41 @@ async function carregarColaboradores() {
             state.colaboradores = resposta.dados;
             renderizar();
         } else {
-            elements.container.innerHTML = '<p>Erro ao carregar dados.</p>';
+            const mensagemRaw = resposta.erro || resposta.error || 'Erro ao carregar dados.';
+            const mensagem =
+                /failed to fetch|networkerror/i.test(String(mensagemRaw))
+                    ? 'Não foi possível conectar ao servidor. Se o backend estiver no Render, ele pode levar alguns segundos para “acordar”.'
+                    : String(mensagemRaw);
+
+            if (elements.container) {
+                elements.container.innerHTML = `
+                    <div>
+                        <p class="error-message">${mensagem}</p>
+                        <button id="btn-retry" style="padding: 10px 14px; border: none; border-radius: 6px; background: #4a69e2; color: #fff; font-weight: 700; cursor: pointer;">Tentar novamente</button>
+                    </div>
+                `;
+
+                const btnRetry = document.getElementById('btn-retry');
+                if (btnRetry) {
+                    btnRetry.addEventListener('click', () => carregarColaboradores());
+                }
+            }
         }
     } catch (error) {
         console.error(error);
+        if (elements.container) {
+            elements.container.innerHTML = `
+                <div>
+                    <p class="error-message">Erro inesperado ao carregar dados.</p>
+                    <button id="btn-retry" style="padding: 10px 14px; border: none; border-radius: 6px; background: #4a69e2; color: #fff; font-weight: 700; cursor: pointer;">Tentar novamente</button>
+                </div>
+            `;
+
+            const btnRetry = document.getElementById('btn-retry');
+            if (btnRetry) {
+                btnRetry.addEventListener('click', () => carregarColaboradores());
+            }
+        }
     }
 }
 

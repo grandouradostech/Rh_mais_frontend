@@ -1,5 +1,21 @@
-// Configuração da URL do Backend
-const API_BASE_URL = 'http://localhost:3000';
+const DEFAULT_PROD_API_BASE_URL = 'https://rh-mais-backend.onrender.com';
+
+function normalizeBaseUrl(value) {
+    return String(value || '').trim().replace(/\/+$/, '');
+}
+
+function resolveApiBaseUrl() {
+    const viteBaseUrl = typeof import.meta !== 'undefined' ? import.meta?.env?.VITE_API_BASE_URL : undefined;
+    const windowBaseUrl = typeof window !== 'undefined' ? window?.__API_BASE_URL__ : undefined;
+    const configured = windowBaseUrl || viteBaseUrl;
+
+    if (configured) return normalizeBaseUrl(configured);
+
+    const isLocalhost = typeof window !== 'undefined' && window.location?.hostname === 'localhost';
+    return isLocalhost ? 'http://localhost:3000' : DEFAULT_PROD_API_BASE_URL;
+}
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 class ApiClient {
     constructor() {
@@ -90,7 +106,7 @@ class ApiClient {
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('usuarioRole');
         sessionStorage.removeItem('usuarioNome');
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
     }
 }
 
