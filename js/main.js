@@ -1,8 +1,9 @@
 import { api } from './core/api.js';
 import { createEmployeeCard } from './components/card.component.js';
 import { ModalComponent } from './components/modal.component.js';
+import { AdminComponent } from './components/admin.component.js';
 
-
+// Verifica sessão
 if (!sessionStorage.getItem('accessToken')) {
     window.location.href = '/login.html';
 }
@@ -16,13 +17,51 @@ const elements = {
     container: document.getElementById('dashboard-container'),
     searchBar: document.getElementById('search-bar'),
     logoutBtn: document.getElementById('nav-sair'),
-    modalCloseBtn: document.getElementById('btn-fechar-modal'), // <--- NOVO
-    modalOverlay: document.getElementById('modal-detalhes')     // <--- NOVO
+    modalCloseBtn: document.getElementById('btn-fechar-modal'),
+    modalOverlay: document.getElementById('modal-detalhes'),
+    
+    // Navegação
+    navColab: document.getElementById('nav-colaboradores'),
+    navAdmin: document.getElementById('nav-admin'),
+    viewColab: document.getElementById('view-colaboradores'),
+    viewAdmin: document.getElementById('view-admin'),
+    mainHeader: document.querySelector('#main-header h1'),
+
+    // NOVO: Elementos do Sidebar (Nome e Cargo)
+    sidebarName: document.getElementById('sidebar-user-name'),
+    sidebarRole: document.getElementById('sidebar-user-role')
 };
 
 async function init() {
     setupEventListeners();
+    checkAdminPermission();
+    atualizarInfoUsuario(); // <--- ESSA LINHA FALTAVA NO SEU
     await carregarColaboradores();
+}
+
+// === NOVO: ATUALIZA NOME NO MENU ===
+function atualizarInfoUsuario() {
+    const nome = sessionStorage.getItem('usuarioNome');
+    const role = sessionStorage.getItem('usuarioRole');
+
+    if (elements.sidebarName) {
+        elements.sidebarName.textContent = nome || 'Usuário';
+    }
+    if (elements.sidebarRole) {
+        let cargoExibicao = 'Colaborador';
+        if (role === 'admin') cargoExibicao = 'Administrador';
+        if (role === 'gestor') cargoExibicao = 'Gestor';
+        
+        elements.sidebarRole.textContent = cargoExibicao;
+    }
+}
+
+// Exibe menu Admin se permitido
+function checkAdminPermission() {
+    const role = sessionStorage.getItem('usuarioRole');
+    if (role === 'admin') {
+        if (elements.navAdmin) elements.navAdmin.style.display = 'flex';
+    }
 }
 
 function setupEventListeners() {
@@ -33,6 +72,22 @@ function setupEventListeners() {
         });
     }
 
+    // === NAVEGAÇÃO ===
+    if (elements.navColab) {
+        elements.navColab.addEventListener('click', (e) => {
+            e.preventDefault();
+            alternarVisao('colaboradores');
+        });
+    }
+
+    if (elements.navAdmin) {
+        elements.navAdmin.addEventListener('click', (e) => {
+            e.preventDefault();
+            alternarVisao('admin');
+        });
+    }
+
+    // Busca
     let timeout;
     if (elements.searchBar) {
         elements.searchBar.addEventListener('input', (e) => {
@@ -42,7 +97,7 @@ function setupEventListeners() {
         });
     }
 
-    // Eventos do Modal
+    // Modal
     if (elements.modalCloseBtn) {
         elements.modalCloseBtn.addEventListener('click', ModalComponent.fechar);
     }
@@ -52,13 +107,34 @@ function setupEventListeners() {
         });
     }
     
-    // EXPOR A FUNÇÃO GLOBALMENTE PARA O ONCLICK FUNCIONAR
+    // Global Click Handler para o Card
     window.abrirDetalhesColaborador = (index) => {
         const colab = state.colaboradores[index];
         if (colab) {
             ModalComponent.abrir(colab);
         }
     };
+}
+
+// Lógica de troca de abas
+function alternarVisao(visao) {
+    if (elements.navColab) elements.navColab.classList.remove('active');
+    if (elements.navAdmin) elements.navAdmin.classList.remove('active');
+
+    if (visao === 'colaboradores') {
+        if (elements.navColab) elements.navColab.classList.add('active');
+        if (elements.viewColab) elements.viewColab.style.display = 'block';
+        if (elements.viewAdmin) elements.viewAdmin.style.display = 'none';
+        if (elements.mainHeader) elements.mainHeader.textContent = 'Colaboradores';
+    } 
+    else if (visao === 'admin') {
+        if (elements.navAdmin) elements.navAdmin.classList.add('active');
+        if (elements.viewColab) elements.viewColab.style.display = 'none';
+        if (elements.viewAdmin) elements.viewAdmin.style.display = 'block';
+        if (elements.mainHeader) elements.mainHeader.textContent = 'Gestão de Acessos';
+        
+        AdminComponent.render('admin-container');
+    }
 }
 
 async function carregarColaboradores() {
@@ -68,41 +144,28 @@ async function carregarColaboradores() {
             state.colaboradores = resposta.dados;
             renderizar();
         } else {
-            const mensagemRaw = resposta.erro || resposta.error || 'Erro ao carregar dados.';
-            const mensagem =
-                /failed to fetch|networkerror/i.test(String(mensagemRaw))
-                    ? 'Não foi possível conectar ao servidor. Se o backend estiver no Render, ele pode levar alguns segundos para “acordar”.'
-                    : String(mensagemRaw);
-
-            if (elements.container) {
-                elements.container.innerHTML = `
-                    <div>
-                        <p class="error-message">${mensagem}</p>
-                        <button id="btn-retry" style="padding: 10px 14px; border: none; border-radius: 6px; background: #4a69e2; color: #fff; font-weight: 700; cursor: pointer;">Tentar novamente</button>
-                    </div>
-                `;
-
-                const btnRetry = document.getElementById('btn-retry');
-                if (btnRetry) {
-                    btnRetry.addEventListener('click', () => carregarColaboradores());
-                }
-            }
+            tratarErroCarregamento(resposta.erro || resposta.error);
         }
     } catch (error) {
         console.error(error);
-        if (elements.container) {
-            elements.container.innerHTML = `
-                <div>
-                    <p class="error-message">Erro inesperado ao carregar dados.</p>
-                    <button id="btn-retry" style="padding: 10px 14px; border: none; border-radius: 6px; background: #4a69e2; color: #fff; font-weight: 700; cursor: pointer;">Tentar novamente</button>
-                </div>
-            `;
+        tratarErroCarregamento('Erro inesperado de conexão.');
+    }
+}
 
-            const btnRetry = document.getElementById('btn-retry');
-            if (btnRetry) {
-                btnRetry.addEventListener('click', () => carregarColaboradores());
-            }
-        }
+function tratarErroCarregamento(msgRaw) {
+    const mensagem = /failed to fetch|networkerror/i.test(String(msgRaw))
+        ? 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.'
+        : String(msgRaw || 'Erro desconhecido');
+
+    if (elements.container) {
+        elements.container.innerHTML = `
+            <div>
+                <p class="error-message">${mensagem}</p>
+                <button id="btn-retry" style="padding: 10px 14px; border: none; border-radius: 6px; background: #4a69e2; color: #fff; cursor: pointer;">Tentar novamente</button>
+            </div>
+        `;
+        const btnRetry = document.getElementById('btn-retry');
+        if (btnRetry) btnRetry.addEventListener('click', () => carregarColaboradores());
     }
 }
 
@@ -115,9 +178,7 @@ function renderizar() {
         return nome.includes(state.filtroTexto);
     });
 
-    // Passamos o index original para conseguir abrir o modal correto
     const html = filtrados.map((colab) => {
-        // Precisamos achar o índice real dele no array original state.colaboradores
         const indexReal = state.colaboradores.indexOf(colab);
         return createEmployeeCard(colab, indexReal);
     }).join('');

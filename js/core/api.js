@@ -19,7 +19,7 @@ const API_BASE_URL = resolveApiBaseUrl();
 
 class ApiClient {
     constructor() {
-        // Não precisamos guardar nada no construtor por enquanto
+        // O construtor fica vazio, não colocamos métodos aqui dentro.
     }
 
     /**
@@ -46,21 +46,19 @@ class ApiClient {
         }
 
         try {
-            // Removemos '/api' da base se o endpoint já vier completo, 
-            // mas como padronizamos, vamos concatenar direto.
-            // Se o endpoint começar com /, ele junta com a base.
             const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
 
             // Interceptador de Segurança (401/403)
             if (response.status === 401 || response.status === 403) {
-                this.logout();
+                // Evita loop infinito de logout se já estivermos na tela de login
+                if (!window.location.pathname.includes('login.html')) {
+                    this.logout();
+                }
                 throw new Error('Sessão expirada ou acesso negado.');
             }
 
-            // Tenta ler o JSON
             const data = await response.json();
 
-            // Se o status HTTP não for 200-299, lança erro
             if (!response.ok) {
                 throw new Error(data.error || data.mensagem || `Erro ${response.status}`);
             }
@@ -68,13 +66,12 @@ class ApiClient {
             return data;
         } catch (error) {
             console.error("Erro na API:", error);
-            // Retorna um objeto de erro para o frontend tratar sem quebrar a tela
             return { sucesso: false, erro: error.message };
         }
     }
 
     // ========================================================
-    // MÉTODOS PÚBLICOS (Aqui está o que faltava: .get, .post)
+    // MÉTODOS PÚBLICOS
     // ========================================================
 
     get(endpoint) {
@@ -92,14 +89,25 @@ class ApiClient {
     delete(endpoint) {
         return this._request(endpoint, 'DELETE');
     }
+    getUsuarios() {
+        return this._request('/auth/users', 'GET');
+    }
+
+    updateUserRole(cpfAlvo, novoPerfil) {
+        return this._request('/auth/users/role', 'PUT', { cpfAlvo, novoPerfil });
+    }
 
     // ========================================================
-    // MÉTODOS ESPECÍFICOS DE NEGÓCIO
+    // MÉTODOS DE NEGÓCIO
     // ========================================================
 
     login(cpf, senha) {
-        // Ajuste a rota '/auth/login' conforme definimos no backend
         return this._request('/auth/login', 'POST', { cpf, senha });
+    }
+
+    // AQUI É O LUGAR CERTO DO REGISTER 👇
+    register(cpf, senha) {
+        return this._request('/auth/register', 'POST', { cpf, senha });
     }
 
     logout() {
