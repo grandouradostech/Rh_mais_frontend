@@ -27,7 +27,7 @@ const elements = {
     viewAdmin: document.getElementById('view-admin'),
     mainHeader: document.querySelector('#main-header h1'),
 
-    // NOVO: Elementos do Sidebar (Nome e Cargo)
+    // Sidebar Info
     sidebarName: document.getElementById('sidebar-user-name'),
     sidebarRole: document.getElementById('sidebar-user-role')
 };
@@ -35,11 +35,11 @@ const elements = {
 async function init() {
     setupEventListeners();
     checkAdminPermission();
-    atualizarInfoUsuario(); // <--- ESSA LINHA FALTAVA NO SEU
+    atualizarInfoUsuario(); // <--- Chamada correta
     await carregarColaboradores();
 }
 
-// === NOVO: ATUALIZA NOME NO MENU ===
+// === CORREÇÃO AQUI: Nome da função corrigido ===
 function atualizarInfoUsuario() {
     const nome = sessionStorage.getItem('usuarioNome');
     const role = sessionStorage.getItem('usuarioRole');
@@ -56,7 +56,6 @@ function atualizarInfoUsuario() {
     }
 }
 
-// Exibe menu Admin se permitido
 function checkAdminPermission() {
     const role = sessionStorage.getItem('usuarioRole');
     if (role === 'admin') {
@@ -72,7 +71,6 @@ function setupEventListeners() {
         });
     }
 
-    // === NAVEGAÇÃO ===
     if (elements.navColab) {
         elements.navColab.addEventListener('click', (e) => {
             e.preventDefault();
@@ -87,7 +85,6 @@ function setupEventListeners() {
         });
     }
 
-    // Busca
     let timeout;
     if (elements.searchBar) {
         elements.searchBar.addEventListener('input', (e) => {
@@ -97,7 +94,6 @@ function setupEventListeners() {
         });
     }
 
-    // Modal
     if (elements.modalCloseBtn) {
         elements.modalCloseBtn.addEventListener('click', ModalComponent.fechar);
     }
@@ -107,7 +103,7 @@ function setupEventListeners() {
         });
     }
     
-    // Global Click Handler para o Card
+    // Global Click Handler para os Cards
     window.abrirDetalhesColaborador = (index) => {
         const colab = state.colaboradores[index];
         if (colab) {
@@ -116,7 +112,6 @@ function setupEventListeners() {
     };
 }
 
-// Lógica de troca de abas
 function alternarVisao(visao) {
     if (elements.navColab) elements.navColab.classList.remove('active');
     if (elements.navAdmin) elements.navAdmin.classList.remove('active');

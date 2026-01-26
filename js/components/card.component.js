@@ -1,42 +1,4 @@
-function formatarSalario(valor) {
-    if (!valor) return '';
-    let numero = valor;
-    if (typeof valor === 'string') {
-        numero = parseFloat(valor.replace("R$", "").replace(/\./g, "").replace(",", "."));
-    }
-    if (isNaN(numero)) return valor;
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(numero);
-}
-
-function formatarCPF(cpf) {
-    if (!cpf) return '';
-    let c = String(cpf).replace(/\D/g, '').padStart(11, '0');
-    return `${c.slice(0, 3)}.${c.slice(3, 6)}.${c.slice(6, 9)}-${c.slice(9, 11)}`;
-}
-
-function formatarData(valor) {
-    if (!valor) return '';
-    if (typeof valor === 'string' && valor.match(/^\d{4}-\d{2}-\d{2}/)) {
-        const [ano, mes, dia] = valor.split('T')[0].split('-');
-        return `${dia}/${mes}/${ano}`;
-    }
-    const serial = Number(valor);
-    if (!isNaN(serial) && serial > 20000) {
-        const d = new Date((serial - 25569) * 86400000);
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
-        return d.toLocaleDateString('pt-BR');
-    }
-    return valor;
-}
-
-function formatarTempoDeEmpresa(dias) {
-    if (!dias) return 'Recente';
-    const n = parseInt(dias, 10);
-    if (isNaN(n)) return dias;
-    if (n < 30) return "Menos de 1 mês";
-    if (n < 365) return `${Math.floor(n/30)} meses`;
-    return `${Math.floor(n/365)} anos`;
-}
+import { formatarSalario, formatarCPF, formatarData, formatarTempoDeEmpresa } from '../core/utils.js';
 
 export const createEmployeeCard = (colab, index) => {
     const v = (val) => val || ''; 
@@ -52,6 +14,7 @@ export const createEmployeeCard = (colab, index) => {
 
     let classifClass = 'classificacao-sem';
     const classif = (colab.classificacao || '').toUpperCase();
+    
     if (classif === 'BOM') classifClass = 'classificacao-bom';
     else if (classif === 'MUITO BOM') classifClass = 'classificacao-muito-bom';
     else if (classif === 'RECUPERAR') classifClass = 'classificacao-recuperar';
@@ -79,14 +42,10 @@ export const createEmployeeCard = (colab, index) => {
                 <p><strong>ESCOLARIDADE:</strong> <span>${v(colab.escolaridade)}</span></p>
                 <p><strong>SALARIO:</strong> <span>${formatarSalario(colab.salario)}</span></p>
                 <p><strong>PCD:</strong> <span class="pcd-badge ${pcdClass}">${pcdValor}</span></p>
-                <p><strong>PLANO DE SAÚDE:</strong> <span></span></p>
-                <p><strong>ENDEREÇO COMPLETO:</strong> <span></span></p>
-                <p><strong>TELEFONE DO COLABORADOR:</strong> <span>${v(colab.contato)}</span></p>
-                <p><strong>TELEFONE DE EMERGENCIA:</strong> <span>${v(colab.contatoEmergencia)}</span></p>
+                <p><strong>TELEFONE:</strong> <span>${v(colab.contato)}</span></p>
                 <p><strong>TURNO:</strong> <span>${v(colab.turno)}</span></p>
-                <p><strong>LÍDER IMEDIATO:</strong> <span>${v(colab.lider)}</span></p>
-                <p><strong>ULTIMA FUNÇÃO:</strong> <span>${v(colab.cargoAntigo)}</span></p>
-                <p><strong>DATA ULTIMA PROMOÇÃO:</strong> <span>${formatarData(colab.dataPromocao)}</span></p>
+                <p><strong>LÍDER:</strong> <span>${v(colab.lider)}</span></p>
+                <p><strong>DATA PROMOÇÃO:</strong> <span>${formatarData(colab.dataPromocao)}</span></p>
                 <p><strong>CICLO DE GENTE:</strong> <span class="classificacao-badge ${classifClass}">${classificacaoTexto}</span></p>
             </div>
             <div class="card-footer" onclick="window.abrirDetalhesColaborador(${index})">

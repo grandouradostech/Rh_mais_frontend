@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. RESET E ESTILOS GLOBAIS
+   ========================================================================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
@@ -5,38 +8,84 @@ body {
     padding: 0;
     color: #333;
 }
+
+/* ==========================================================================
+   2. TELA DE LOGIN (MODERNA)
+   ========================================================================== */
 .login-body {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 100vh; background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Fundo degradê profissional */
+    background: linear-gradient(135deg, #192A56 0%, #4a69e2 100%);
 }
+
 .login-container {
-    width: 100%; max-width: 400px; padding: 30px;
-    background-color: #ffffff; border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    /* Sombra mais suave e elegante */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+    text-align: center;
+    margin: 20px;
 }
+
 .login-header { margin-bottom: 25px; }
+
 .login-icon {
-    font-size: 40px; display: block; margin-bottom: 15px;
-    color: #4a69e2; background-color: #e6eafc;
-    width: 60px; height: 60px; line-height: 60px;
-    border-radius: 50%; margin: 0 auto 15px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px auto;
+    color: #4a69e2;
+    background-color: #e6eafc;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    font-size: 36px;
 }
-.login-header h2 { margin: 0 0 5px 0; color: #1c1c1e; font-size: 1.5em; }
-.login-header p { margin: 0; color: #6a6a6a; }
-.login-form .input-group { margin-bottom: 15px; text-align: left; }
-.login-form .input-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
+
+.login-header h2 { margin: 0 0 5px 0; color: #192A56; font-size: 1.8em; font-weight: 700; }
+.login-header p { margin: 0; color: #6c757d; font-size: 0.95em; }
+
+/* Formulários de Login/Cadastro */
+.login-form .input-group { margin-bottom: 20px; text-align: left; }
+.login-form .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: #444; }
+
 .login-form .input-group input {
     width: 100%; padding: 12px 15px;
-    border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1em;
+    border: 2px solid #e9ecef; /* Borda mais moderna */
+    border-radius: 8px; box-sizing: border-box; font-size: 1em;
+    transition: border-color 0.3s;
 }
+
+.login-form .input-group input:focus {
+    border-color: #4a69e2; outline: none;
+}
+
 .login-form button {
-    width: 100%; padding: 14px; border: none; border-radius: 6px;
-    background-color: #4a69e2; color: white; font-size: 1em; font-weight: bold;
-    cursor: pointer; transition: background-color 0.3s;
+    width: 100%; padding: 14px; border: none; border-radius: 8px;
+    background-color: #4a69e2; color: white; font-size: 1.05em; font-weight: 600;
+    cursor: pointer; transition: background-color 0.3s, transform 0.2s;
 }
-.login-form button:hover { background-color: #3b55b5; }
-.login-form button:disabled { background-color: #ccc; cursor: not-allowed; }
-.error-message { color: #dc3545; font-size: 0.9em; margin-top: 10px; min-height: 1.2em; }
+
+.login-form button:hover {
+    background-color: #3b55b5; transform: translateY(-2px);
+}
+.login-form button:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
+
+/* Links de Alternância (Login <-> Cadastro) */
+.toggle-link-container {
+    margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;
+}
+.toggle-link { font-size: 0.95em; color: #666; margin: 0; }
+.toggle-link a { color: #4a69e2; text-decoration: none; font-weight: bold; }
+.toggle-link a:hover { text-decoration: underline; }
+
+.error-message { color: #dc3545; font-size: 0.9em; margin-top: 10px; min-height: 1.2em; font-weight: 500; }
 
 /* ==========================================================================
    3. DASHBOARD E SIDEBAR
@@ -56,6 +105,7 @@ body {
 .sidebar-header .user-icon { font-size: 40px; color: #555; margin-right: 15px; }
 .sidebar-header .user-info h3 { margin: 0; font-size: 1.1em; }
 .sidebar-header .user-info p { margin: 0; font-size: 0.8em; color: #6c757d; }
+
 .sidebar-nav { flex-grow: 1; padding: 15px 0; }
 .nav-link {
     display: flex; align-items: center; padding: 12px 20px; margin: 5px 10px;
@@ -65,7 +115,9 @@ body {
 .nav-link .material-icons-outlined { margin-right: 15px; font-size: 22px; }
 .nav-link:hover { background-color: #f8f9fa; }
 .nav-link.active { background-color: #192A56; color: white; font-weight: bold; }
+
 .sidebar-footer { padding: 15px 0; border-top: 1px solid #e9ecef; }
+
 .main-content {
     margin-left: 260px; flex-grow: 1; padding: 20px;
     transition: margin-left 0.3s ease;
@@ -73,7 +125,7 @@ body {
 .content-section header { text-align: center; margin-bottom: 30px; color: #333; }
 
 /* ==========================================================================
-   4. FILTROS E CARDS (VISUAL ANTIGO RESTAURADO)
+   4. FILTROS E CARDS
    ========================================================================== */
 .filter-container {
     display: flex; flex-wrap: wrap; justify-content: center;
@@ -221,14 +273,13 @@ body {
     background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;
     display: flex; flex-direction: column;
-    /* A cor da borda esquerda é definida via style inline no JS ou classes auxiliares */
 }
 .pdi-card h4 {
     margin: 0; background-color: #f1f3f5; color: #000; padding: 15px 20px;
     font-size: 1.1em; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e9ecef;
 }
 
-/* O segredo do Layout Horizontal (Scroll) */
+/* Layout Horizontal (Scroll) */
 .pdi-details {
     display: flex; gap: 0; overflow-x: auto; padding: 0; white-space: nowrap;
 }
@@ -242,7 +293,7 @@ body {
 }
 .pdi-item span { font-size: 0.95em; color: #333; font-weight: 500; white-space: normal; }
 
-/* Mobile */
+/* Mobile e Responsividade */
 @media (max-width: 768px) {
     .mobile-header { display: flex; }
     .sidebar { transform: translateX(-100%); }
@@ -251,14 +302,13 @@ body {
     .main-content { margin-left: 0; width: 100%; padding-top: 80px; }
     .employee-card { flex-basis: 100%; max-width: 100%; }
 }
+
 /* ==========================================================================
-   6. SISTEMA DE ABAS (TABS) - NOVO
+   6. SISTEMA DE ABAS (TABS)
    ========================================================================== */
 .tabs-header {
-    display: flex;
-    border-bottom: 2px solid #e0e0e0;
-    margin-bottom: 20px;
-    gap: 20px;
+    display: flex; border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 20px; gap: 20px;
 }
 
 .tab-btn {
@@ -266,9 +316,7 @@ body {
     font-size: 1em; font-weight: 600; color: #7f8c8d;
     cursor: pointer; position: relative; transition: color 0.3s;
 }
-
 .tab-btn:hover { color: #192A56; }
-
 .tab-btn.active { color: #192A56; }
 .tab-btn.active::after {
     content: ''; position: absolute; bottom: -2px; left: 0;
@@ -281,7 +329,7 @@ body {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ==========================================================================
-   7. CARD DE FEEDBACK & DESAFIO (HÍBRIDO)
+   7. CARD DE FEEDBACK & DESAFIO
    ========================================================================== */
 .feedback-list { display: flex; flex-direction: column; gap: 20px; }
 
@@ -290,7 +338,6 @@ body {
     overflow: hidden; display: flex; flex-direction: column;
 }
 
-/* Cabeçalho do Card (Tipo e Data) */
 .feedback-header {
     padding: 12px 20px; background: #f8f9fa; border-bottom: 1px solid #eee;
     display: flex; justify-content: space-between; align-items: center;
@@ -299,47 +346,37 @@ body {
     font-size: 0.75em; padding: 4px 10px; border-radius: 20px;
     font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
 }
-.tag-tecnico { background: #e3f2fd; color: #1565c0; }       /* Azul */
-.tag-comportamental { background: #f3e5f5; color: #7b1fa2; } /* Roxo */
-.tag-bemestar { background: #e8f5e9; color: #2e7d32; }      /* Verde */
+.tag-tecnico { background: #e3f2fd; color: #1565c0; }       
+.tag-comportamental { background: #f3e5f5; color: #7b1fa2; } 
+.tag-bemestar { background: #e8f5e9; color: #2e7d32; }      
 
-/* Corpo do Card */
 .feedback-body { padding: 20px; }
-
 .feedback-section { margin-bottom: 15px; }
-.feedback-section h5 {
-    margin: 0 0 5px 0; color: #999; font-size: 0.75em; text-transform: uppercase;
-}
+.feedback-section h5 { margin: 0 0 5px 0; color: #999; font-size: 0.75em; text-transform: uppercase; }
 .feedback-text { color: #333; font-size: 0.95em; line-height: 1.5; }
 
-/* Ação/Desafio (Destaque) */
 .desafio-box {
     background-color: #fff8e1; border-left: 4px solid #ffc107;
     padding: 12px; border-radius: 0 4px 4px 0; margin-top: 10px;
 }
 
-/* Rodapé: Evidência e Avaliação */
 .feedback-footer {
     padding: 15px 20px; background: #fafafa; border-top: 1px solid #eee;
     display: flex; justify-content: space-between; align-items: center;
 }
 
-/* Estrelas de Avaliação */
 .rating-stars { color: #ffc107; display: flex; gap: 2px; }
 .rating-stars .material-icons-outlined { font-size: 20px; }
+
 /* ==========================================================================
-   8. FORMULÁRIO DE FEEDBACK (NOVO)
+   8. FORMULÁRIO DE FEEDBACK
    ========================================================================== */
 .form-feedback {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    border-radius: 8px;
-    animation: fadeIn 0.3s;
+    background-color: #fff; border: 1px solid #e0e0e0;
+    padding: 20px; border-radius: 8px; animation: fadeIn 0.3s;
 }
 
 .form-group { margin-bottom: 15px; }
-
 .form-group label {
     display: block; font-weight: 700; font-size: 0.9em;
     color: #192A56; margin-bottom: 5px;
@@ -347,15 +384,12 @@ body {
 
 .form-control {
     width: 100%; padding: 10px; border: 1px solid #ccc;
-    border-radius: 6px; font-size: 1em; box-sizing: border-box; /* Importante */
+    border-radius: 6px; font-size: 1em; box-sizing: border-box;
 }
 .form-control:focus { outline: none; border-color: #4a69e2; }
-
 textarea.form-control { resize: vertical; min-height: 80px; }
 
-.form-actions {
-    display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;
-}
+.form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
 .btn-cancelar {
     background: #e0e0e0; color: #333; border: none;
@@ -368,10 +402,20 @@ textarea.form-control { resize: vertical; min-height: 80px; }
     padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;
 }
 .btn-salvar:hover { background: #218838; }
-/* Tabela Admin */
+
+/* ==========================================================================
+   9. PAINEL ADMINISTRATIVO (TABELA E USUÁRIOS)
+   ========================================================================== */
+.admin-panel {
+    background: #fff; padding: 20px; border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.panel-header { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.panel-header h2 { margin: 0; color: #192A56; }
+
 .admin-table {
     width: 100%; border-collapse: collapse; background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;
+    border-radius: 8px; overflow: hidden;
 }
 .admin-table th, .admin-table td {
     padding: 15px; text-align: left; border-bottom: 1px solid #eee;
