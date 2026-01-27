@@ -45,7 +45,7 @@ export const ModalComponent = {
                 <div>
                     <h2 style="margin:0; font-size:1.6em; color:#fff; font-weight:700;">${nome}</h2>
                     <div style="margin-top:8px; opacity: 0.9;">
-                        ${v(colab.cargo)} | ${v(colab.area)}
+                        ${v(colab.cargo)}
                     </div>
                 </div>
             </div>
@@ -55,20 +55,6 @@ export const ModalComponent = {
                 <button class="tab-btn" onclick="window.trocarAba(event, 'tab-ciclo')">Ciclo de Gente</button>
                 <button class="tab-btn" onclick="window.trocarAba(event, 'tab-feedbacks')">Feedbacks & Desafios</button>
             </div>
-
-            <div id="tab-perfil" class="tab-content active">
-                ${podeEditar ? `
-                <div style="margin-bottom: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px;">
-                    <label style="display:block; font-weight:bold; margin-bottom:5px; color:#856404;">Rating de Potencial (9-Box)</label>
-                    <select style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
-                        <option value="BOM" ${colab.classificacao === 'BOM' ? 'selected' : ''}>Bom</option>
-                        <option value="MUITO BOM" ${colab.classificacao === 'MUITO BOM' ? 'selected' : ''}>Muito Bom</option>
-                        <option value="PREPARAR" ${colab.classificacao === 'PREPARAR' ? 'selected' : ''}>Preparar (Promoção)</option>
-                        <option value="RECUPERAR" ${colab.classificacao === 'RECUPERAR' ? 'selected' : ''}>Recuperar (PIP)</option>
-                        <option value="DESLIGAR" ${colab.classificacao === 'DESLIGAR' ? 'selected' : ''}>Desligar</option>
-                    </select>
-                </div>` : `<div style="margin-bottom:20px;"><strong>Rating:</strong> ${colab.classificacao || '-'}</div>`}
-
                 <div class="modal-dados-grid">
                     <div class="modal-item"><strong>Admissão</strong> <span>${formatarData(colab.dataAdmissao)}</span></div>
                     <div class="modal-item"><strong>Tempo de Casa</strong> <span>${tempoEmpresa}</span></div>

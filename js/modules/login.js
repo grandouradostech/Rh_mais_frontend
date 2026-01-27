@@ -57,7 +57,7 @@ formLogin.addEventListener('submit', async (event) => {
             sessionStorage.setItem('accessToken', response.token);
             if(response.usuario) {
                 sessionStorage.setItem('usuarioNome', response.usuario.nome);
-                sessionStorage.setItem('usuarioRole', response.usuario.role);
+                sessionStorage.setItem('usuarioRole', String(response.usuario.role || '').trim().toLowerCase());
             }
             window.location.href = '/index.html';
         } else {

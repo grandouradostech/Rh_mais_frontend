@@ -42,7 +42,10 @@ export const createEmployeeCard = (colab, index) => {
                 <p><strong>ESCOLARIDADE:</strong> <span>${v(colab.escolaridade)}</span></p>
                 <p><strong>SALARIO:</strong> <span>${formatarSalario(colab.salario)}</span></p>
                 <p><strong>PCD:</strong> <span class="pcd-badge ${pcdClass}">${pcdValor}</span></p>
+                <p><strong>PLANO DE SAÚDE:</strong> <span>EM BREVE</span></p>
+                <p><strong>ENDEREÇO COMPLETO:</strong> <span></span></p>
                 <p><strong>TELEFONE:</strong> <span>${v(colab.contato)}</span></p>
+                <p><strong>TELEFONE DE EMERGENCIA:</strong> <span>${v(colab.telEmergencia)}</span></p>
                 <p><strong>TURNO:</strong> <span>${v(colab.turno)}</span></p>
                 <p><strong>LÍDER:</strong> <span>${v(colab.lider)}</span></p>
                 <p><strong>DATA PROMOÇÃO:</strong> <span>${formatarData(colab.dataPromocao)}</span></p>

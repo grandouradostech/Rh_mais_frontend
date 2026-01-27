@@ -42,7 +42,7 @@ async function init() {
 // === CORREÇÃO AQUI: Nome da função corrigido ===
 function atualizarInfoUsuario() {
     const nome = sessionStorage.getItem('usuarioNome');
-    const role = sessionStorage.getItem('usuarioRole');
+    const role = String(sessionStorage.getItem('usuarioRole') || '').trim().toLowerCase();
 
     if (elements.sidebarName) {
         elements.sidebarName.textContent = nome || 'Usuário';
@@ -57,7 +57,7 @@ function atualizarInfoUsuario() {
 }
 
 function checkAdminPermission() {
-    const role = sessionStorage.getItem('usuarioRole');
+    const role = String(sessionStorage.getItem('usuarioRole') || '').trim().toLowerCase();
     if (role === 'admin') {
         if (elements.navAdmin) elements.navAdmin.style.display = 'flex';
     }
