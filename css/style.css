@@ -402,6 +402,10 @@ textarea.form-control { resize: vertical; min-height: 80px; }
     padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;
 }
 .btn-salvar:hover { background: #218838; }
+.feedback-text {
+    white-space: pre-line; /* Mantém as quebras de linha das perguntas */
+    line-height: 1.6;
+}
 
 /* ==========================================================================
    9. PAINEL ADMINISTRATIVO (TABELA E USUÁRIOS)

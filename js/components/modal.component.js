@@ -53,7 +53,7 @@ export const ModalComponent = {
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="window.trocarAba(event, 'tab-perfil')">Perfil</button>
                 <button class="tab-btn" onclick="window.trocarAba(event, 'tab-ciclo')">Ciclo de Gente</button>
-                <button class="tab-btn" onclick="window.trocarAba(event, 'tab-feedbacks')">Feedbacks & Desafios</button>
+                <button class="tab-btn" onclick="window.trocarAba(event, 'tab-feedbacks')">Feedbacks</button>
             </div>
                 <div class="modal-dados-grid">
                     <div class="modal-item"><strong>Admissão</strong> <span>${formatarData(colab.dataAdmissao)}</span></div>
